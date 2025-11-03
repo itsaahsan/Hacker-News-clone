@@ -1,0 +1,41 @@
+.auto-refresh-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background-color: #f6f6ef;
+  border-bottom: 1px solid #ddd;
+  font-size: 8pt;
+}
+
+.auto-refresh-button {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 8pt;
+  font-family: inherit;
+  border-radius: 2px;
+  color: #666;
+}
+
+.auto-refresh-button:hover {
+  background-color: #f0f0f0;
+  border-color: #bbb;
+}
+
+.auto-refresh-button.enabled {
+  background-color: #ff6600;
+  color: white;
+  border-color: #ff6600;
+}
+
+.auto-refresh-button.enabled:hover {
+  background-color: #e55a00;
+}
+
+.refresh-countdown {
+  color: #828282;
+  font-style: italic;
+  font-size: 8pt;
+}

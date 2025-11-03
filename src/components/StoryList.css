@@ -1,0 +1,19 @@
+.story-list {
+  background-color: #f6f6ef;
+  padding: 0;
+}
+
+.story-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  background-color: #f6f6ef;
+}
+
+.no-stories {
+  padding: 40px 20px;
+  text-align: center;
+  color: #828282;
+  font-size: 12pt;
+  font-style: italic;
+}

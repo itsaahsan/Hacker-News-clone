@@ -1,0 +1,109 @@
+.header {
+  background-color: #ff6600;
+  padding: 2px;
+  border-bottom: 1px solid #ff6600;
+}
+
+.header-content {
+  background-color: #ff6600;
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  font-size: 10pt;
+}
+
+.logo {
+  margin-right: 10px;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  color: #000000;
+  text-decoration: none;
+}
+
+.logo-img {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ffffff;
+  margin-right: 4px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.nav {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.nav-link {
+  color: #000000;
+  text-decoration: none;
+  font-size: 10pt;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.nav-separator {
+  margin: 0 3px;
+  color: #000000;
+}
+
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.logo-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #000000;
+  text-decoration: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+.logo-button:hover {
+  opacity: 0.8;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 5px;
+  padding: 2px;
+  font-family: inherit;
+}
+
+.refresh-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+  font-size: 10pt;
+  padding: 0;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  text-decoration: underline;
+}
