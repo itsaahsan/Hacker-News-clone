@@ -118,3 +118,9 @@ This project uses the official Hacker News API:
 ## License
 
 MIT License - feel free to use this project for learning and development!
+
+## Acknowledgments
+
+- Thanks to the [Hacker News API](https://github.com/HackerNews/API) for providing the data
+- Built with [Vite](https://vitejs.dev/) for a lightning-fast development experience
+- Inspired by the original [Hacker News](https://news.ycombinator.com/)
