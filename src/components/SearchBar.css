@@ -1,7 +1,9 @@
+/* Classic Hacker News Search Bar Styles */
 .search-container {
   background-color: #f6f6ef;
-  padding: 10px;
-  border-bottom: 1px solid #ff6600;
+  padding: 8px 15px;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 .search-form {
@@ -13,10 +15,10 @@
 
 .search-input {
   flex: 1;
-  padding: 4px 6px;
+  padding: 3px 5px;
   border: 1px solid #ccc;
   font-size: 10pt;
-  font-family: inherit;
+  font-family: Verdana, Geneva, sans-serif;
 }
 
 .search-input:focus {
@@ -25,13 +27,13 @@
 }
 
 .search-button, .clear-button {
-  padding: 4px 8px;
+  padding: 3px 6px;
   background-color: #ff6600;
   color: white;
   border: none;
   cursor: pointer;
   font-size: 10pt;
-  font-family: inherit;
+  font-family: Verdana, Geneva, sans-serif;
 }
 
 .search-button:hover, .clear-button:hover {

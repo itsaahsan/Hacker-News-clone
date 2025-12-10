@@ -1,16 +1,19 @@
+/* Classic Hacker News App Styles */
 .app {
   width: 100%;
   background-color: #f6f6ef;
   min-height: 100vh;
+  font-family: Verdana, Geneva, sans-serif;
 }
 
 .search-results-info {
-  padding: 10px 15px;
+  padding: 8px 15px;
   background-color: #f6f6ef;
-  border-bottom: 1px solid #ccc;
   font-size: 10pt;
   color: #828282;
   font-style: italic;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 .retry-button {
@@ -21,4 +24,9 @@
   border: none;
   cursor: pointer;
   font-size: 10pt;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.retry-button:hover {
+  background-color: #e55a00;
 }

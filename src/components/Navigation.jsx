@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import PropTypes from 'prop-types'
 import './Navigation.css'
 
 function Navigation({ currentSection, onSectionChange }) {
@@ -25,6 +25,11 @@ function Navigation({ currentSection, onSectionChange }) {
       ))}
     </nav>
   )
+}
+
+Navigation.propTypes = {
+  currentSection: PropTypes.string.isRequired,
+  onSectionChange: PropTypes.func.isRequired
 }
 
 export default Navigation

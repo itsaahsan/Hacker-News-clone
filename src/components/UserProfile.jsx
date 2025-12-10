@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/useAuth'
 import './UserProfile.css'
 
 function UserProfile({ onClose }) {
@@ -106,6 +107,10 @@ function UserProfile({ onClose }) {
       </div>
     </div>
   )
+}
+
+UserProfile.propTypes = {
+  onClose: PropTypes.func.isRequired
 }
 
 export default UserProfile

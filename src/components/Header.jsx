@@ -1,9 +1,9 @@
+import PropTypes from 'prop-types'
 import './Header.css'
 import Navigation from './Navigation'
-import ThemeToggle from './ThemeToggle'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/useAuth';
 
-function Header({ currentSection, onSectionChange, onRefresh, onLoginClick, onProfileClick, onFavoritesClick, onSubmitClick }) {
+function Header({ currentSection, onSectionChange, onLoginClick, onProfileClick, onFavoritesClick, onSubmitClick }) {
   const { user, isLoggedIn } = useAuth()
   return (
     <header className="header">
@@ -19,10 +19,6 @@ function Header({ currentSection, onSectionChange, onRefresh, onLoginClick, onPr
           onSectionChange={onSectionChange}
         />
         <div className="header-actions">
-          <button onClick={onRefresh} className="refresh-button" title="Refresh stories">
-            ↻
-          </button>
-          <span className="nav-separator">|</span>
           <button onClick={onSubmitClick} className="nav-button">submit</button>
           <span className="nav-separator">|</span>
           {isLoggedIn ? (
@@ -45,5 +41,14 @@ function Header({ currentSection, onSectionChange, onRefresh, onLoginClick, onPr
     </header>
   )
 }
+
+Header.propTypes = {
+  currentSection: PropTypes.string.isRequired,
+  onSectionChange: PropTypes.func.isRequired,
+  onLoginClick: PropTypes.func.isRequired,
+  onProfileClick: PropTypes.func.isRequired,
+  onFavoritesClick: PropTypes.func.isRequired,
+  onSubmitClick: PropTypes.func.isRequired
+};
 
 export default Header

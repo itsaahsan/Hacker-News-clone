@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 import './App.css'
-import './styles/darkMode.css'
 import Header from './components/Header'
 import StoryList from './components/StoryList'
 import SearchBar from './components/SearchBar'
@@ -10,11 +9,9 @@ import UserProfile from './components/UserProfile'
 import FavoritesModal from './components/FavoritesModal'
 import SubmitModal from './components/SubmitModal'
 import LoadingSpinner from './components/LoadingSpinner'
-import AutoRefreshControl from './components/AutoRefreshControl'
 import { AuthProvider } from './contexts/AuthContext'
-import { ThemeProvider } from './contexts/ThemeContext'
+import { WebSocketProvider } from './contexts/WebSocketContext'
 import { fetchStoriesByType, searchStories } from './services/hackerNewsApi'
-import { useAutoRefresh } from './hooks/useAutoRefresh'
 
 function AppContent() {
   const [stories, setStories] = useState([])
@@ -24,6 +21,8 @@ function AppContent() {
   const [currentSection, setCurrentSection] = useState('top')
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
+  const [isFetchingMore, setIsFetchingMore] = useState(false)
+  const [currentOffset, setCurrentOffset] = useState(0)
   const [selectedStory, setSelectedStory] = useState(null)
   const [showComments, setShowComments] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
@@ -35,6 +34,7 @@ function AppContent() {
     try {
       setLoading(true)
       setError(null)
+      setCurrentOffset(0)
       const fetchedStories = await fetchStoriesByType(section, 30)
       setStories(fetchedStories)
       setAllStories(fetchedStories)
@@ -52,9 +52,37 @@ function AppContent() {
     }
   }, [currentSection, searchQuery])
 
+  const fetchMoreStories = useCallback(async () => {
+    if (isFetchingMore || searchQuery) return // Don't fetch more during search
+    
+    try {
+      setIsFetchingMore(true)
+      const newOffset = currentOffset + 30
+      setCurrentOffset(newOffset)
+      
+      const moreStories = await fetchStoriesByType(currentSection, 30, newOffset)
+      
+      if (moreStories.length > 0) {
+        const updatedStories = [...stories, ...moreStories]
+        setStories(updatedStories)
+        setAllStories(updatedStories)
+        
+        // Re-apply search if active
+        if (searchQuery) {
+          const searchResults = await searchStories(searchQuery, updatedStories)
+          setStories(searchResults)
+        }
+      }
+    } catch (err) {
+      console.error('Error loading more stories:', err)
+    } finally {
+      setIsFetchingMore(false)
+    }
+  }, [currentSection, currentOffset, stories, isFetchingMore, searchQuery])
+
   useEffect(() => {
     loadStories(currentSection)
-  }, [currentSection])
+  }, [currentSection, loadStories])
 
   const handleSectionChange = (section) => {
     setCurrentSection(section)
@@ -125,14 +153,6 @@ function AppContent() {
     loadStories(currentSection)
   }, [loadStories, currentSection])
 
-  // Auto-refresh functionality
-  const {
-    isAutoRefreshEnabled,
-    toggleAutoRefresh,
-    nextRefreshIn,
-    nextRefreshSeconds
-  } = useAutoRefresh(handleRefresh, 5) // 5 minutes interval
-
   if (loading) {
     return (
       <div className="app">
@@ -146,12 +166,6 @@ function AppContent() {
           onSubmitClick={handleSubmitClick}
         />
         <SearchBar onSearch={handleSearch} isSearching={isSearching} />
-        <AutoRefreshControl
-          isEnabled={isAutoRefreshEnabled}
-          onToggle={toggleAutoRefresh}
-          nextRefreshIn={nextRefreshIn}
-          nextRefreshSeconds={nextRefreshSeconds}
-        />
         <LoadingSpinner 
           size="large" 
           text={`Loading ${currentSection} stories...`} 
@@ -190,22 +204,22 @@ function AppContent() {
         onLoginClick={handleLoginClick}
         onProfileClick={handleProfileClick}
         onFavoritesClick={handleFavoritesClick}
+        onSubmitClick={handleSubmitClick}
       />
       <SearchBar onSearch={handleSearch} isSearching={isSearching} />
-      <AutoRefreshControl
-        isEnabled={isAutoRefreshEnabled}
-        onToggle={toggleAutoRefresh}
-        nextRefreshIn={nextRefreshIn}
-        nextRefreshSeconds={nextRefreshSeconds}
-      />
       
       {searchQuery && (
         <div className="search-results-info">
-          Found {stories.length} result{stories.length !== 1 ? 's' : ''} for "{searchQuery}"
+          Found {stories.length} result{stories.length !== 1 ? 's' : ''} for &quot;{searchQuery}&quot;
         </div>
       )}
       
-      <StoryList stories={stories} onStoryClick={handleStoryClick} />
+      <StoryList 
+        stories={stories} 
+        onStoryClick={handleStoryClick}
+        fetchMoreStories={fetchMoreStories}
+        isFetchingMore={isFetchingMore}
+      />
       
       {showComments && selectedStory && (
         <CommentsModal 
@@ -239,11 +253,11 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
+    <WebSocketProvider>
       <AuthProvider>
         <AppContent />
       </AuthProvider>
-    </ThemeProvider>
+    </WebSocketProvider>
   )
 }
 

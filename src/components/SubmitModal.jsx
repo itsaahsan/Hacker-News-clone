@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/useAuth'
 import LoadingSpinner from './LoadingSpinner'
 import './SubmitModal.css'
 
 function SubmitModal({ onClose }) {
-  const { user, isLoggedIn } = useAuth()
+  const { isLoggedIn } = useAuth()
   const [formData, setFormData] = useState({
     title: '',
     url: '',
@@ -207,6 +208,10 @@ function SubmitModal({ onClose }) {
       </div>
     </div>
   )
+}
+
+SubmitModal.propTypes = {
+  onClose: PropTypes.func.isRequired
 }
 
 export default SubmitModal

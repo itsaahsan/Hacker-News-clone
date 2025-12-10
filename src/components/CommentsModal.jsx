@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { fetchItem } from '../services/hackerNewsApi'
 import './CommentsModal.css'
@@ -103,6 +104,21 @@ function CommentsModal({ storyId, onClose, story }) {
       </div>
     </div>
   )
+}
+
+CommentsModal.propTypes = {
+  storyId: PropTypes.number.isRequired,
+  onClose: PropTypes.func.isRequired,
+  story: PropTypes.shape({
+    kids: PropTypes.arrayOf(PropTypes.number),
+    title: PropTypes.string,
+    score: PropTypes.number,
+    by: PropTypes.string,
+    time: PropTypes.number,
+    url: PropTypes.string,
+    text: PropTypes.string,
+    descendants: PropTypes.number
+  }).isRequired
 }
 
 export default CommentsModal

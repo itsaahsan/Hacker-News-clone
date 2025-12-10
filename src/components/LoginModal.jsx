@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/useAuth'
 import LoadingSpinner from './LoadingSpinner'
 import './LoginModal.css'
 
@@ -103,6 +104,18 @@ function LoginModal({ onClose }) {
             <small>Password must be at least 6 characters</small>
           </div>
 
+          {isLogin && (
+            <div className="form-group">
+              <button
+                type="button"
+                className="forgot-password-button"
+                onClick={() => alert('Password reset link sent!')}
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
+
           {error && <div className="error-message">{error}</div>}
 
           <button type="submit" className="submit-button" disabled={loading}>
@@ -126,6 +139,10 @@ function LoginModal({ onClose }) {
       </div>
     </div>
   )
+}
+
+LoginModal.propTypes = {
+  onClose: PropTypes.func.isRequired
 }
 
 export default LoginModal

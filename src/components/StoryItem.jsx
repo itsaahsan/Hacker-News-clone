@@ -1,16 +1,22 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import axios from 'axios'
+import { useAuth } from '../contexts/useAuth'
 import './StoryItem.css'
 
 function StoryItem({ story, rank, onStoryClick, showFavoriteButton = true }) {
-  const { user, hasVoted, toggleVote, isFavorite, addToFavorites, removeFromFavorites } = useAuth()
+  const { user, isFavorite, addToFavorites, removeFromFavorites } = useAuth()
   const [localVoted, setLocalVoted] = useState(false)
 
-  const handleVote = (e) => {
+  const handleVote = async (e, increment = 1) => {
     e.stopPropagation()
     if (user) {
-      const newVoteState = toggleVote(story.id)
-      setLocalVoted(newVoteState)
+      try {
+        await axios.post(`/api/items/${story.id}/vote`, { increment });
+      } catch (error) {
+        console.error('Voting failed:', error);
+        alert('Voting failed. Please try again.');
+      }
     } else {
       // Guest voting (local only)
       setLocalVoted(!localVoted)
@@ -29,6 +35,15 @@ function StoryItem({ story, rank, onStoryClick, showFavoriteButton = true }) {
   }
 
   const handleCommentsClick = (e) => {
+    e.preventDefault()
+    onStoryClick && onStoryClick(story)
+  }
+
+  const handleStoryTitleClick = (e) => {
+    // Only handle clicks on the title itself, not on links
+    if (e.target.tagName === 'A' && e.target.href && !e.target.href.includes('#item?id=')) {
+      return // Let external links open normally
+    }
     e.preventDefault()
     onStoryClick && onStoryClick(story)
   }
@@ -59,16 +74,16 @@ function StoryItem({ story, rank, onStoryClick, showFavoriteButton = true }) {
           <span className="rank">{rank}.</span>
         </td>
         <td className="vote-cell">
-          <div 
-            className={`vote-arrow ${(user ? hasVoted(story.id) : localVoted) ? 'voted' : ''}`}
-            onClick={handleVote}
-            title={user ? 'Vote for this story' : 'Login to vote'}
-          >
-            ▲
+          <div className="vote-buttons">
+            <button 
+              className="vote-btn upvote"
+              onClick={(e) => handleVote(e, 1)}
+              aria-label="Upvote"
+            >▴</button>
           </div>
         </td>
         <td className="story-cell">
-          <div className="story-title">
+          <div className="story-title" onClick={handleStoryTitleClick} style={{ cursor: 'pointer' }}>
             <a href={story.url || `#item?id=${story.id}`} className="story-link">
               {story.title}
             </a>
@@ -93,7 +108,6 @@ function StoryItem({ story, rank, onStoryClick, showFavoriteButton = true }) {
         <td colSpan="2"></td>
         <td className="meta-cell">
           <div className="story-meta">
-            <span className="score">{story.score} points</span>
             <span className="separator"> by </span>
             <a href={`#user?id=${story.by}`} className="author">{story.by}</a>
             <span className="separator"> </span>
@@ -116,6 +130,22 @@ function StoryItem({ story, rank, onStoryClick, showFavoriteButton = true }) {
       </tr>
     </>
   )
+}
+
+StoryItem.propTypes = {
+  story: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string,
+    score: PropTypes.number,
+    by: PropTypes.string.isRequired,
+    time: PropTypes.number.isRequired,
+    descendants: PropTypes.number,
+    kids: PropTypes.arrayOf(PropTypes.number)
+  }).isRequired,
+  rank: PropTypes.number.isRequired,
+  onStoryClick: PropTypes.func.isRequired,
+  showFavoriteButton: PropTypes.bool
 }
 
 export default StoryItem

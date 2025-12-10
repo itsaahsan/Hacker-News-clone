@@ -103,7 +103,7 @@ export const fetchJobStoryIds = async () => {
 }
 
 // Fetch stories by type
-export const fetchStoriesByType = async (type, limit = 30) => {
+export const fetchStoriesByType = async (type, limit = 30, offset = 0) => {
   try {
     let storyIds = []
     
@@ -127,7 +127,7 @@ export const fetchStoriesByType = async (type, limit = 30) => {
         storyIds = await fetchTopStoryIds()
     }
     
-    const topStoryIds = storyIds.slice(0, limit)
+    const topStoryIds = storyIds.slice(offset, offset + limit)
     const storyPromises = topStoryIds.map(id => fetchItem(id))
     const stories = await Promise.all(storyPromises)
     

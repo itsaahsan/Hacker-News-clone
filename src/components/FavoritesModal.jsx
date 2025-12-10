@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/useAuth'
 import { fetchItem } from '../services/hackerNewsApi'
 import StoryItem from './StoryItem'
 import LoadingSpinner from './LoadingSpinner'
@@ -80,6 +81,11 @@ function FavoritesModal({ onClose, onStoryClick }) {
       </div>
     </div>
   )
+}
+
+FavoritesModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onStoryClick: PropTypes.func.isRequired
 }
 
 export default FavoritesModal

@@ -1,6 +1,10 @@
+/* Classic Hacker News Story List Styles */
 .story-list {
   background-color: #f6f6ef;
   padding: 0;
+  margin: 0;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 .story-table {
@@ -8,6 +12,7 @@
   border-spacing: 0;
   width: 100%;
   background-color: #f6f6ef;
+  margin: 0;
 }
 
 .no-stories {
@@ -16,4 +21,11 @@
   color: #828282;
   font-size: 12pt;
   font-style: italic;
+}
+
+.loading-more {
+  padding: 20px;
+  text-align: center;
+  color: #828282;
+  font-size: 10pt;
 }
